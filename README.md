@@ -1,5 +1,18 @@
 # grellOS
-grellOS is an OS/Kernel based off of https://arjunsreedharan.org/post/82710718100/kernels-101-lets-write-a-kernel.
-currently has no commands, but backend for commands is complete. 
-uses VGA text mode to display characters. 
-designed to run on i386/i486.
+## About grellOS
+GrellOS is a basic text based operating system/kernel (for now) that is built in C.
+## Hardware Requirements
++ CPU: intel i386 or better
++ RAM: 8kb or more*
++ Video: Anything capable of [VGA text mode](https://en.wikipedia.org/wiki/VGA_text_mode)*
++ Storage: At least a 3.5in floppy* <br>
+*spec may increase in the future
+## Planned features
++ Commands (WIP)
++ Filesystem
++ Text editor
++ Portable mode
+### Possible features (Not planned but may happen)
++ Graphic mode
++ Support for other languages (software language support)
++ Web browser
