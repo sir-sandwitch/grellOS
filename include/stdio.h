@@ -26,3 +26,13 @@ void clear_screen(void)
         vidptr[i++] = color;
     }
 }
+
+void inb(unsigned short int port, unsigned char *data)
+{
+    asm volatile("inb %1, %0" : "=a" (*data) : "d" (port));
+}
+
+void outb(unsigned short int port, unsigned char data)
+{
+    asm volatile("outb %1, %0" : : "d" (port), "a" (data));
+}

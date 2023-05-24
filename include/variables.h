@@ -9,6 +9,7 @@
 #define IDT_SIZE 256
 #define INTERRUPT_GATE 0x8E
 #define KERNEL_CODE_SEGMENT_OFFSET 0x08
+#define PIT_FREQUENCY 120
 
 #define ENTER_KEY_CODE 0x1C
 #define BACK_KEY_CODE 0x0E
@@ -17,6 +18,7 @@
 
 extern unsigned char keyboard_map[128];
 extern void keyboard_handler(void);
+extern void pit_handler(void);
 extern char read_port(unsigned short port);
 extern void write_port(unsigned short port, unsigned char data);
 extern void load_idt(unsigned long *idt_ptr);
@@ -36,3 +38,16 @@ char cmdbuf[256];
 char color = 0x62;
 char fgcolor = 0x2;
 char bgcolor = 0x6;
+
+typedef struct registers{
+    unsigned long eax;
+    unsigned long ebx;
+    unsigned long ecx;
+    unsigned long edx;
+    unsigned long esi;
+    unsigned long edi;
+    unsigned long ebp;
+    unsigned long esp;
+    unsigned long eip;
+    unsigned long eflags;
+}registers_t;

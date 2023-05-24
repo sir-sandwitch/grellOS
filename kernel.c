@@ -18,6 +18,10 @@
 #define STRING_INCL
 #include "include/string.h"
 #endif
+#ifndef TASK_INCL
+#define TASK_INCL
+#include "include/taskschedule.h"
+#endif
 
 struct IDT_entry {
     unsigned short int offset_lowerbits;
@@ -43,6 +47,17 @@ void idt_init(void)
     IDT[0x21].zero = 0;
     IDT[0x21].type_attr = INTERRUPT_GATE;
     IDT[0x21].offset_higherbits = (keyboard_address & 0xffff0000) >> 16;
+
+    /*load PIT timer*/
+    unsigned long timer_address;
+    timer_address = (unsigned long)pit_handler;
+    IDT[0x20].offset_lowerbits = timer_address & 0xffff;
+    IDT[0x20].selector = KERNEL_CODE_SEGMENT_OFFSET;
+    IDT[0x20].zero = 0;
+    IDT[0x20].type_attr = INTERRUPT_GATE;
+    IDT[0x20].offset_higherbits = (timer_address & 0xffff0000) >> 16;
+
+
 
     /*     Ports
     *    PIC1    PIC2
@@ -83,10 +98,34 @@ void idt_init(void)
     load_idt(idt_ptr);
 }
 
+void pit_init(void){
+    unsigned long timer_frequency = 1193180; /* in Hz */
+    unsigned long divisor = 0;
+    unsigned char low_byte = 0, high_byte = 0;
+
+    /* calculate the divisor */
+    divisor = timer_frequency / PIT_FREQUENCY;
+    low_byte = (unsigned char)(divisor & 0xff);
+    high_byte = (unsigned char)((divisor >> 8) & 0xff);
+
+    /* send the command */
+    write_port(0x43, 0x36);
+
+    /* send the frequency divisor */
+    write_port(0x40, low_byte);
+    write_port(0x40, high_byte);
+}
+
+void pit_handler_main(void){
+    registers_t* regs;
+    cycleTask(regs);
+    write_port(0x20, 0x20);
+}
+
 void kb_init(void)
 {
-    /* 0xFD is 11111101 - enables only IRQ1 (keyboard)*/
-    write_port(0x21 , 0xFD);
+    /* enable irq 0 & 1 */
+    write_port(0x21 , 0b11111100);
 }
 
 void keyboard_handler_main(void) {
@@ -112,6 +151,9 @@ void keyboard_handler_main(void) {
         else if (keycode == BACK_KEY_CODE) {
             if (strlen(cmdbuf) > 0) {
                 cmdbuf[strlen(cmdbuf) - 1] = '\0';
+                current_loc = current_loc - 2;
+                vidptr[current_loc++] = ' ';
+                vidptr[current_loc++] = color;
                 bsflag = 1;
             }
         }
@@ -125,13 +167,14 @@ void keyboard_handler_main(void) {
 
 void kmain(void)
 {
-    const char *str = "grellOS v0.1";
+    char *str = "grellOS v0.2a";
     clear_screen();
     kprint(str);
     kprint_newline();
     kprint_newline();
 
     idt_init();
+    pit_init();
     kb_init();
 
     while (1) {

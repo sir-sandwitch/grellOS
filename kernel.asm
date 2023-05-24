@@ -11,12 +11,14 @@ section .text
 
 global start
 global keyboard_handler
+global pit_handler
 global read_port
 global write_port
 global load_idt
 
 extern kmain 		;this is defined in the c file
 extern keyboard_handler_main
+extern pit_handler_main
 
 read_port:
 	mov edx, [esp + 4]
@@ -38,6 +40,10 @@ load_idt:
 
 keyboard_handler:                 
 	call    keyboard_handler_main
+	iretd
+
+pit_handler:
+	call    pit_handler_main
 	iretd
 
 start:
