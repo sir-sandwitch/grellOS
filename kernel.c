@@ -354,9 +354,114 @@ void command_handler_main(char* cmd) {
 						fgcolor = 0xF;
 						color = (bgcolor << 4) | fgcolor;
 						break;
+					default:
+						kprint("Invalid color");
+						kprint_newline();
+						break;
 				}
 			}
+			else kprint("Invalid color");
 			break;	
+
+		case 0x59774E: //bg
+			if(args[0] != NULL) {
+				switch(args[0]){
+					case 0xFDCAE5D: //light variation of color
+						switch(args[1]){
+							case 0x7C977C78: //gray
+								bgcolor = 0x7;
+								color = (fgcolor << 4) | bgcolor;
+								color = (bgcolor << 4) | fgcolor;
+								break;
+							case 0x7C94A78D: //blue
+								bgcolor = 0x9;
+								color = (fgcolor << 4) | bgcolor;
+								color = (bgcolor << 4) | fgcolor;
+								break;
+							case 0xF871A56: //green
+								bgcolor = 0xA;
+								color = (fgcolor << 4) | bgcolor;
+								color = (bgcolor << 4) | fgcolor;
+								break;
+							case 0x7C9568B0: //cyan
+								bgcolor = 0xB;
+								color = (fgcolor << 4) | bgcolor;
+								color = (bgcolor << 4) | fgcolor;
+								break;
+							case 0xB88A540: //red
+								bgcolor = 0xC;
+								color = (fgcolor << 4) | bgcolor;
+								color = (bgcolor << 4) | fgcolor;
+								break;
+							default:
+								kprint("Invalid color");
+								kprint_newline();
+								break;
+						}
+						break;
+					case 0xF294442: //black
+						bgcolor = 0x0;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x7C94A78D: //blue
+						bgcolor = 0x1;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0xF871A56: //green
+						bgcolor = 0x2;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x7C9568B0: //cyan
+						bgcolor = 0x3;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0xB88A540: //red
+						bgcolor = 0x4;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0xB4110202: //magenta
+						bgcolor = 0x5;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0xF2CCCAD: //brown
+						bgcolor = 0x6;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x7C977C78: //gray
+						bgcolor = 0x8;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x7C9C4737: //pink
+						bgcolor = 0xD;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x297FF6E1: //yellow
+						bgcolor = 0xE;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					case 0x10A33986: //white
+						bgcolor = 0xF;
+						color = (fgcolor << 4) | bgcolor;
+						color = (bgcolor << 4) | fgcolor;
+						break;
+					default:
+						kprint("Invalid color");
+						kprint_newline();
+						break;
+				}
+			}
+			else kprint("Invalid color");
+			break;
 
         default:
             kprint("Command not found, hash: 0x");
