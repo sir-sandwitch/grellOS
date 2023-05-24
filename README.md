@@ -8,7 +8,6 @@ GrellOS is a basic text based operating system/kernel (for now) that is built in
 + Storage: 10kb* <br>
 *spec may increase in the future
 ## Planned features
-+ Commands (WIP)
 + Filesystem
 + Text editor
 + Portable mode
