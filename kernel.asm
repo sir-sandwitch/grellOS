@@ -52,6 +52,14 @@ start:
 	call kmain
 	hlt 				;halt the CPU
 
+section .data
+ALIGN 0x1000
+global PRDT_entry
+PRDT_entry:
+	dd 0x00000000
+	dd 0x00000000
+	dd 0x00000000
+	dd 0x00000000
 section .bss
 resb 8192; 8KB for stack
 stack_space:

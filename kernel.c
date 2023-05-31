@@ -22,6 +22,10 @@
 #define TASK_INCL
 #include "include/taskschedule.h"
 #endif
+#ifndef DMA_INCL
+#define DMA_INCL
+#include "include/dmahdd.h"
+#endif
 
 struct IDT_entry {
     unsigned short int offset_lowerbits;
@@ -152,9 +156,8 @@ void keyboard_handler_main(void) {
             if (strlen(cmdbuf) > 0) {
                 cmdbuf[strlen(cmdbuf) - 1] = '\0';
                 current_loc = current_loc - 2;
-                vidptr[current_loc++] = ' ';
-                vidptr[current_loc++] = color;
-                bsflag = 1;
+                vidptr[current_loc] = ' ';
+                vidptr[current_loc+1] = color;
             }
         }
         else {

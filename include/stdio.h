@@ -27,9 +27,11 @@ void clear_screen(void)
     }
 }
 
-void inb(unsigned short int port, unsigned char *data)
+char inb(unsigned short int port)
 {
-    asm volatile("inb %1, %0" : "=a" (*data) : "d" (port));
+    unsigned char data;
+    asm volatile("inb %1, %0" : "=a" (data) : "d" (port));
+    return data;
 }
 
 void outb(unsigned short int port, unsigned char data)

@@ -13,6 +13,11 @@
 #include "string.h"
 #endif
 
+#ifndef DMAHDD_INCL
+#define DMAHDD_INCL
+#include "dmahdd.h"
+#endif
+
 char* readBootSector(unsigned int sector)
 {
 	
