@@ -64,12 +64,12 @@ typedef volatile struct BMR{
     uint32_t PRDT_byteAddress2;
 }BMR_t;
 
+
 /*return info on drive*/
-int[256] getDriveInfo(){
+int* getDriveInfo(){
     int driveInfo[256];
     /*check if drive is DMA or AHCI*/
-    if((ahci.ghc & 0x80000000) == 0x80000000){
-        /*SATA/AHCI*/
+    if(getDriveBusType() == 1){
         return driveInfo;
     }
     else{
@@ -94,7 +94,7 @@ int[256] getDriveInfo(){
 
 
         
-        return driveInfo;
+        return &driveInfo;
     }
 }
 

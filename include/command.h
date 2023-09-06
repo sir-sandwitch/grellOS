@@ -2,9 +2,25 @@
 #define VARIABLES_INCL
 #include "variables.h"
 #endif
+
 #ifndef STRING_INCL
 #define STRING_INCL
 #include "string.h"
+#endif
+
+#ifndef TASK_INCL
+#define TASK_INCL
+#include "taskschedule.h"
+#endif
+
+#ifndef DMA_INCL
+#define DMA_INCL
+#include "ahcihdd.h"
+#endif
+
+#ifndef SATA_INCL
+#define SATA_INCL
+#include "sata.h"
 #endif
 
 /*djb2 hash taken from http://www.cse.yorku.ca/~oz/hash.html*/
@@ -55,11 +71,17 @@ void command_handler_main(char* cmd) {
 		case 0x7C97D2EE: //help
 			kprint("Available commands:");
 			kprint_newline();
-			kprint("clear");
+			kprint("clear  -- clears screen");
 			kprint_newline();
-			kprint("help");
+			kprint("help -- shows this list");
 			kprint_newline();
-			kprint("echo");
+			kprint("echo -- echos to terminal");
+			kprint_newline();
+			kprint("initdr -- initializes harddrive");
+			kprint_newline();
+			kprint("fg -- change foreground color");
+			kprint_newline();
+			kprint("bg -- change background color");
 			kprint_newline();
 		case 0x7C9624C4: //echo
 			for (int i = 1; i < 16; i++) {
@@ -226,6 +248,26 @@ void command_handler_main(char* cmd) {
 			}
 			else kprint("Invalid color");
 			break;
+
+		case 0x4CEC4CF: //initdr
+			int ret;
+			char* initdrive = "initdrive";
+			void* args;
+			//taskAdd(initdrive, TASK_HIGH, initDrive(), args, &ret);
+			initDrive();
+			kprint("Drive initialization complete!");
+			kprint_newline();
+			break;
+			
+		case 0x7C9D4D41: //read
+			// HBA_PORT *port = (HBA_PORT *)0x400000;
+			// port_rebase(port, 0);
+			// port->cmd |= HBA_PxCMD_FRE;
+			// port->cmd |= HBA_PxCMD_ST;
+			// port->cmd |= HBA_PxCMD_FR;
+			// port->cmd |= HBA_PxCMD_CR;
+			
+			sata_read(0, 1, 0x100000);
 
         default:
             kprint("Command not found, hash: 0x");

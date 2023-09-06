@@ -24,7 +24,11 @@
 #endif
 #ifndef DMA_INCL
 #define DMA_INCL
-#include "include/dmahdd.h"
+#include "include/ahcihdd.h"
+#endif
+#ifndef SATA_INCL
+#define SATA_INCL
+#include "include/sata.h"
 #endif
 
 struct IDT_entry {

@@ -38,3 +38,23 @@ void outb(unsigned short int port, unsigned char data)
 {
     asm volatile("outb %1, %0" : : "d" (port), "a" (data));
 }
+
+void outl(unsigned short int port, unsigned long data)
+{
+    asm volatile("outl %1, %0" : : "d" (port), "a" (data));
+}
+
+unsigned long inl(unsigned short int port)
+{
+    unsigned long data;
+    asm volatile("inl %1, %0" : "=a" (data) : "d" (port));
+    return data;
+}
+
+void memset(void* ptr, int value, unsigned int num)
+{
+    unsigned char* ptr2 = (unsigned char*)ptr;
+    while (num-- > 0) {
+        *ptr2++ = value;
+    }
+}
