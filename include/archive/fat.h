@@ -18,10 +18,7 @@
 #include "dmahdd.h"
 #endif
 
-char* readBootSector(unsigned int sector)
-{
-	
-}
+char* readBootSector(unsigned int sector);
 
 typedef struct fat_extBS_32
 {
@@ -76,20 +73,20 @@ typedef struct fat_BS
  
 }__attribute__((packed)) fat_BS_t;
 
-if (sectorsize == 0) 
-{
-   fat_type = ExFAT;
-}
-else if(total_clusters < 4085) 
-{
-   fat_type = FAT12;
-} 
-else if(total_clusters < 65525) 
-{
-   fat_type = FAT16;
-} 
-else
-{
-   fat_type = FAT32;
-}
+// if (sectorsize == 0) 
+// {
+//    fat_type = ExFAT;
+// }
+// else if(total_clusters < 4085) 
+// {
+//    fat_type = FAT12;
+// } 
+// else if(total_clusters < 65525) 
+// {
+//    fat_type = FAT16;
+// } 
+// else
+// {
+//    fat_type = FAT32;
+// }
 

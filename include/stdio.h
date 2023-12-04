@@ -1,60 +1,15 @@
-#ifndef VARIABLES_INCL
-#define VARIABLES_INCL
-#include "variables.h"
-#endif
+extern void kprint(char *str);
 
-void kprint(char *str)
-{
-    unsigned int i = 0;
-    while (str[i] != '\0') {
-        vidptr[current_loc++] = str[i++];
-        vidptr[current_loc++] = color;
-    }
-}
+extern void kprint_newline(void);
 
-void kprint_newline(void)
-{
-    unsigned int line_size = BYTES_FOR_EACH_ELEMENT * COLUMNS_IN_LINE;
-    current_loc = current_loc + (line_size - current_loc % (line_size));
-}
+extern void clear_screen(void);
 
-void clear_screen(void)
-{
-    unsigned int i = 0;
-    while (i < SCREENSIZE) {
-        vidptr[i++] = ' ';
-        vidptr[i++] = color;
-    }
-}
+extern char inb(unsigned short int port);
 
-char inb(unsigned short int port)
-{
-    unsigned char data;
-    asm volatile("inb %1, %0" : "=a" (data) : "d" (port));
-    return data;
-}
+extern void outb(unsigned short int port, unsigned char data);
 
-void outb(unsigned short int port, unsigned char data)
-{
-    asm volatile("outb %1, %0" : : "d" (port), "a" (data));
-}
+extern void outl(unsigned short int port, unsigned long data);
 
-void outl(unsigned short int port, unsigned long data)
-{
-    asm volatile("outl %1, %0" : : "d" (port), "a" (data));
-}
+extern unsigned long inl(unsigned short int port);
 
-unsigned long inl(unsigned short int port)
-{
-    unsigned long data;
-    asm volatile("inl %1, %0" : "=a" (data) : "d" (port));
-    return data;
-}
-
-void memset(void* ptr, int value, unsigned int num)
-{
-    unsigned char* ptr2 = (unsigned char*)ptr;
-    while (num-- > 0) {
-        *ptr2++ = value;
-    }
-}
+extern void memset(void* ptr, int value, unsigned int num);

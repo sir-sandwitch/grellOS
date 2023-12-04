@@ -1,41 +1,31 @@
 #ifndef VARIABLES_INCL
 #define VARIABLES_INCL
-#include "variables.h"
+#include <variables.h>
 #endif
 
-#ifndef STDIO_INCL
-#define STDIO_INCL
-#include "stdio.h"
-#endif
+extern int taskCount;
+extern int taskIndex;
+extern int taskCurrent;
+extern int taskNext;
+extern int taskLast;
 
-#ifndef STRING_INCL
-#define STRING_INCL
-#include "string.h"
-#endif
+extern int highCount;
+extern int highIndex;
+extern int highCurrent;
+extern int highNext;
+extern int highLast;
 
-int taskCount = 0;
-int taskIndex = 0;
-int taskCurrent = 0;
-int taskNext = 0;
-int taskLast = 0;
+extern int normalCount;
+extern int normalIndex;
+extern int normalCurrent;
+extern int normalNext;
+extern int normalLast;
 
-int highCount = 0;
-int highIndex = 0;
-int highCurrent = 0;
-int highNext = 0;
-int highLast = 0;
-
-int normalCount = 0;
-int normalIndex = 0;
-int normalCurrent = 0;
-int normalNext = 0;
-int normalLast = 0;
-
-int lowCount = 0;
-int lowIndex = 0;
-int lowCurrent = 0;
-int lowNext = 0;
-int lowLast = 0;
+extern int lowCount;
+extern int lowIndex;
+extern int lowCurrent;
+extern int lowNext;
+extern int lowLast;
 
 
 typedef enum taskState{
@@ -61,76 +51,15 @@ typedef struct task{
     void (*taskReturn)();
 }task_t;
 
-task_t taskList[65536];
-task_t highPriorityTaskList[21845];
-task_t normalPriorityTaskList[21845];
-task_t lowPriorityTaskList[21845];
+extern task_t taskList[65536];
+extern task_t highPriorityTaskList[21845];
+extern task_t normalPriorityTaskList[21845];
+extern task_t lowPriorityTaskList[21845];
 
 
-void taskInit(){
-    for(int i = 0; i < 65536; i++){
-        taskList[i].name = "";
-        taskList[i].pid = i;
-        taskList[i].priority = TASK_NORMAL;
-        taskList[i].state = TASK_STOPPED;
-        taskList[i].task = 0;
-        taskList[i].taskArgs = 0;
-        taskList[i].taskReturn = 0;
-    }
-}
+extern void taskInit();
 
-void taskAdd(char* name, taskPriority_t priority, void (*task)(), void (*taskArgs)(), void (*taskReturn)()){
-    taskList[taskCount].name = name;
-    taskList[taskCount].priority = priority;
-    taskList[taskCount].state = TASK_RUNNING;
-    taskList[taskCount].task = task;
-    taskList[taskCount].taskArgs = taskArgs;
-    taskList[taskCount].taskReturn = taskReturn;
-    taskCount++;
-    switch(priority){
-        case TASK_HIGH:
-            highPriorityTaskList[highCount] = taskList[taskCount];
-            highCount++;
-            break;
-        case TASK_NORMAL:
-            normalPriorityTaskList[normalCount] = taskList[taskCount];
-            normalCount++;
-            break;
-        case TASK_LOW:
-            lowPriorityTaskList[lowCount] = taskList[taskCount];
-            lowCount++;
-            break;
-    }
-}
-
-void taskStart(){
-    taskCurrent = 0;
-    taskNext = 0;
-    taskLast = 0;
-    taskList[taskCurrent].task();
-}
+extern void taskAdd(char* name, taskPriority_t priority, void (*task)(), void (*taskArgs)(), void (*taskReturn)());
 
 /*cycle task with priority based round robin*/
-void cycleTask(registers_t* registers){
-    if(highCurrent < highCount){
-        highPriorityTaskList[highCurrent].task();
-        highCurrent++;
-    }
-    else if(normalCurrent < normalCount){
-        normalPriorityTaskList[normalCurrent].task();
-        normalCurrent++;
-    }
-    else if(lowCurrent < lowCount){
-        lowPriorityTaskList[lowCurrent].task();
-        lowCurrent++;
-    }
-    if(highCurrent >= highCount){
-        highCurrent = 0;
-    }
-    if(normalCurrent >= normalCount){
-        normalCurrent = 0;
-    }
-    if(lowCurrent >= lowCount){
-        lowCurrent = 0;
-    }
-}
+extern void cycleTask(registers_t* registers);

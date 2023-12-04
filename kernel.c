@@ -1,35 +1,53 @@
 #ifndef KEYBOARD_INCL
-#include "include/keyboard.h"
+#include <keyboard.h>
 #define KEYBOARD_INCL
 #endif
 #ifndef VARIABLES_INCL
-#include "include/variables.h"
+#include <variables.h>
 #define VARIABLES_INCL
 #endif
 #ifndef COMMAND_INCL
-#include "include/command.h"
+#include <command.h>
 #define COMMAND_INCL
 #endif
 #ifndef STDIO_INCL
 #define STDIO_INCL
-#include "include/stdio.h"
+#include <stdio.h>
 #endif
 #ifndef STRING_INCL
 #define STRING_INCL
-#include "include/string.h"
+#include <string.h>
 #endif
 #ifndef TASK_INCL
 #define TASK_INCL
-#include "include/taskschedule.h"
+#include <taskschedule.h>
 #endif
 #ifndef DMA_INCL
 #define DMA_INCL
-#include "include/ahcihdd.h"
+#include <ahcihdd.h>
 #endif
 #ifndef SATA_INCL
 #define SATA_INCL
-#include "include/sata.h"
+#include <sata.h>
 #endif
+
+/*globals*/
+
+/* current cursor location */
+unsigned int current_loc = 0;
+/* video memory begins at address 0xb8000 */
+char *vidptr = (char*)0xb8000;
+
+/*Backspace flag*/
+int bsflag = 0;
+
+char command = ' ';
+
+char cmdbuf[256];
+
+char color = 0x62;
+char fgcolor = 0x2;
+char bgcolor = 0x6;
 
 struct IDT_entry {
     unsigned short int offset_lowerbits;
@@ -130,8 +148,7 @@ void pit_handler_main(void){
     write_port(0x20, 0x20);
 }
 
-void kb_init(void)
-{
+void kb_init(void){
     /* enable irq 0 & 1 */
     write_port(0x21 , 0b11111100);
 }

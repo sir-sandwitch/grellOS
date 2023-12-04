@@ -3,6 +3,9 @@
         "variables.h": "c",
         "keyboard.h": "c",
         "taskschedule.h": "c",
-        "ahcihdd.h": "c"
+        "ahcihdd.h": "c",
+        "stdio.h": "c",
+        "string.h": "c",
+        "sata.h": "c"
     }
 }

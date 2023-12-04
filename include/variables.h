@@ -29,20 +29,20 @@ extern void write_port(unsigned short port, unsigned char data);
 extern void load_idt(unsigned long *idt_ptr);
 
 /* current cursor location */
-unsigned int current_loc = 0;
-/* video memory begins at address 0xb8000 */
-char *vidptr = (char*)0xb8000;
+extern unsigned int current_loc;
+
+extern char *vidptr;
 
 /*Backspace flag*/
-int bsflag = 0;
+extern int bsflag;
 
-char command = ' ';
+extern char command;
 
-char cmdbuf[256];
+extern char cmdbuf[256];
 
-char color = 0x62;
-char fgcolor = 0x2;
-char bgcolor = 0x6;
+extern char color;
+extern char fgcolor;
+extern char bgcolor;
 
 typedef struct registers{
     unsigned long eax;
